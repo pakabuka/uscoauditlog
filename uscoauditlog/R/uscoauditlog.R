@@ -55,7 +55,7 @@ clean_the_data = function(filename){
   new_division <- c()
   new_team <- c()
   new_login <- c()
-  count = 0 # to count the number of instances *important*
+  count = 1 # to count the number of instances *important*
 
   #Run time for this is O(n^2)
   #Iterate through each row, then for each row,  iterate through
@@ -63,11 +63,11 @@ clean_the_data = function(filename){
   for (i in 1:nrow(d[1])){
     print(i)
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
-      new_id[count] = d[[1]][i]
-      new_audit[count] = str_split(d[[2]][1], " ")[[1]][j]
-      new_division[count] = d[[3]][i]
-      new_team[count] = d[[4]][i]
-      new_login[count] = d[[5]][i]
+      new_id[count] = d[[1]][j]
+      new_audit[count] = str_split(d[[2]][i], " ")[[1]][j]
+      new_division[count] = d[[3]][j]
+      new_team[count] = d[[4]][j]
+      new_login[count] = d[[5]][j]
       count = count + 1
     }
   }
