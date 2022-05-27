@@ -115,12 +115,13 @@ clean_str = function(str){
   str = gsub("?V4\\w+", "", str)
 
 
-  str = gsub("2", "", str)
-  str = gsub("0", "", str)
-  str = gsub("1", "", str)
+  
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
   str = str_trim(str, side = "both")
+  str = gsub("2", "", str)
+  str = gsub("0", "", str)
+  str = gsub("1", "", str)
   return(str)
 }
 
