@@ -1,5 +1,5 @@
 
-library(stringr)
+library("stringr")
 
 #This function  cleans the string
 clean_str = function(str){
