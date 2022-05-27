@@ -63,7 +63,7 @@ clean_the_data = function(filename){
   for (i in 1:nrow(d[1])){
     print(i)
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
-      new_id[count] = d[[1]][j]
+      new_id[count] = d[[1]][i]
       new_audit[count] = str_split(d[[2]][i], " ")[[1]][j]
       new_division[count] = d[[3]][j]
       new_team[count] = d[[4]][j]
