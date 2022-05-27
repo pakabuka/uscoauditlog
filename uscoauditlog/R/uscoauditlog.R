@@ -3,6 +3,7 @@ library("stringr")
 
 #This function  cleans the string
 clean_str = function(str){
+  library("stringr")
   str = gsub("\\*", " ", str)
   str = gsub("?A1\\w+", "", str)
   str = gsub("?B1\\w+", "", str)
