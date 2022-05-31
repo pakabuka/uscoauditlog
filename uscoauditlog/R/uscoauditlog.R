@@ -158,6 +158,7 @@ clean_str = function(str){
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
   str = gsub("Open for Correction", "Open_for_Correction", str)
+  str = gsub("Pending Payment", "Pending_Payment", str)
   str = str_trim(str, side = "both")
   
   return(str)
@@ -211,7 +212,6 @@ clean_the_data = function(filename){
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
-  print("***************** success! *****************")
+  print("******************* success! *******************")
   return(data_cleaned)
 }
-
