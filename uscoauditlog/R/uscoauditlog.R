@@ -158,6 +158,7 @@ clean_str = function(str){
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
   str = gsub("Open for Correction", "Open_for_Correction", str)
+  str = gsub("Open for Cancellation", "Open_for_Cancellation", str)
   str = gsub("Pending Payment", "Pending_Payment", str)
   str = gsub("Contact Last Name", "Contact_Last_Name", str)
   str = gsub("Contact First Name", "Contact_First_Name", str)
@@ -168,6 +169,10 @@ clean_str = function(str){
   str = gsub("Musical works from an album", "Musical_works_from_an_album", str)
   str = gsub("Sound recordings from an album", "Sound_recordings_from_an_album", str)
   str = gsub("Single Serial Issue","Single_Serial_Issue", str)
+  str = gsub("Published Photographs","Published_Photographs", str)
+  str = gsub("Unpublished Photographs","Unpublished_Photographs", str)
+  str = gsub("Daily Newsletters","Daily_Newsletters", str)
+  str = gsub("Daily Newspapers","Daily_Newspapers", str)
   str = str_trim(str, side = "both")
   
   return(str)
@@ -217,7 +222,9 @@ clean_the_data = function(filename){
     }
   }
   #store cleaned data to new data frame
-  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
+  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, 
+                             LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, 
+                             REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
