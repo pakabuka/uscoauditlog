@@ -229,18 +229,5 @@ clean_the_data = function(filename){
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
   print("******************* success! *******************")
-  #return(data_cleaned)
+  #return(data_cleaned) #don't really need to return it...
 }
-
-
-
-#------- My assumption on the values in the variables AUDIT_LOG -------
-# all the values in AUDIT_LOG that start with "X" is field values (with the exception of owner)
-
-# DELETE THESE LATER... JUST TESTING
-#install_github("pakabuka/uscoauditlog/uscoauditlog")
-#data <- read_excel("cleaned_data.xlsx")
-#attach(data)
-#tab = table(AUDIT_LOG)
-#sorted <- tab[order(tab, decreasing = TRUE)]
-#sorted
