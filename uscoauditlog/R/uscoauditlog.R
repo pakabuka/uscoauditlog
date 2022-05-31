@@ -179,7 +179,7 @@ clean_the_data = function(filename){
   DIVISION <- c()
   TEAM <- c()
   LOGIN <- c()
-  OWNERSHIP <- c()
+  OWNERSHIP_DATE <- c()
   RECEIPT_DATE = c()
   WAIT_ON_CUST = c()
   REGISTRATION_DECISION_DATE = c()
@@ -197,7 +197,7 @@ clean_the_data = function(filename){
       DIVISION[count] = d[[4]][j]
       TEAM[count] = d[[5]][j]
       LOGIN[count] = d[[6]][j]
-      OWNERSHIP[count] = d[[7]][j]
+      OWNERSHIP_DATE[count] = d[[7]][j]
       RECEIPT_DATE[count] = d[[8]][j]
       WAIT_ON_CUST[count] = d[[9]][j]
       REGISTRATION_DECISION_DATE[count] = d[[10]][j]
@@ -206,11 +206,12 @@ clean_the_data = function(filename){
     }
   }
   #store cleaned data to new data frame
-  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
+  data_cleaned = data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
   print("success!")
+  
   return(data_cleaned)
 }
 
