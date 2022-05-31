@@ -229,7 +229,7 @@ clean_the_data = function(filename){
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
   print("******************* success! *******************")
-  return(data_cleaned)
+  #return(data_cleaned)
 }
 
 
@@ -244,6 +244,3 @@ clean_the_data = function(filename){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
-
-
-
