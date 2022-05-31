@@ -161,6 +161,13 @@ clean_str = function(str){
   str = gsub("Pending Payment", "Pending_Payment", str)
   str = gsub("Contact Last Name", "Contact_Last_Name", str)
   str = gsub("Contact First Name", "Contact_First_Name", str)
+  str = gsub("Group Unpublished Works", "Group_Unpublished_Works", str)
+  str = gsub("Special Handling", "Special_Handling", str)
+  str = gsub("Error sending to CentralPrint", "Error_sending_to_CentralPrint", str)
+  str = gsub("Short Online Literary Works", "Short_Online_Literary_Works", str)
+  str = gsub("Musical works from an album", "Musical_works_from_an_album", str)
+  str = gsub("Sound recordings from an album", "Sound_recordings_from_an_album", str)
+  str = gsub("Single Serial Issue","Single_Serial_Issue", str)
   str = str_trim(str, side = "both")
   
   return(str)
@@ -217,12 +224,3 @@ clean_the_data = function(filename){
   print("******************* success! *******************")
   return(data_cleaned)
 }
-
-
-
-# DELETE THESE LATER... JUST TESTING
-#data <- read_excel("cleaned_data.xlsx")
-#attach(data)
-#tab = table(AUDIT_LOG)
-#sorted <- tab[order(tab, decreasing = TRUE)]
-#sorted
