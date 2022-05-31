@@ -209,15 +209,15 @@ clean_the_data = function(filename){
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
       SR_NUM[count] = d[[1]][i]
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
-      OPERATION_UNIT[count] = d[[3]][j]
-      DIVISION[count] = d[[4]][j]
-      TEAM[count] = d[[5]][j]
-      LOGIN[count] = d[[6]][j]
-      OWNERSHIP_DATE[count] = d[[7]][j]
-      RECEIPT_DATE[count] = d[[8]][j]
-      WAIT_ON_CUST[count] = d[[9]][j]
-      REGISTRATION_DECISION_DATE[count] = d[[10]][j]
-      REGISTRATION_DECISION[count] = d[[11]][j]
+      OPERATION_UNIT[count] = d[[3]][i]
+      DIVISION[count] = d[[4]][i]
+      TEAM[count] = d[[5]][i]
+      LOGIN[count] = d[[6]][i]
+      OWNERSHIP_DATE[count] = d[[7]][i]
+      RECEIPT_DATE[count] = d[[8]][i]
+      WAIT_ON_CUST[count] = d[[9]][i]
+      REGISTRATION_DECISION_DATE[count] = d[[10]][i]
+      REGISTRATION_DECISION[count] = d[[11]][i]
       count <- count + 1
     }
   }
@@ -231,3 +231,19 @@ clean_the_data = function(filename){
   print("******************* success! *******************")
   return(data_cleaned)
 }
+
+
+
+#------- My assumption on the values in the variables AUDIT_LOG -------
+# all the values in AUDIT_LOG that start with "X" is field values (with the exception of owner)
+
+# DELETE THESE LATER... JUST TESTING
+#install_github("pakabuka/uscoauditlog/uscoauditlog")
+#data <- read_excel("cleaned_data.xlsx")
+#attach(data)
+#tab = table(AUDIT_LOG)
+#sorted <- tab[order(tab, decreasing = TRUE)]
+#sorted
+
+
+
