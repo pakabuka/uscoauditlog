@@ -231,3 +231,57 @@ clean_the_data = function(filename){
   print("******************* success! *******************")
   #return(data_cleaned) #don't really need to return it...
 }
+
+
+format_the_cleaned_data <- function(filename){
+  
+  #------- My assumption on the values in the variable AUDIT_LOG -------
+  # all the values in AUDIT_LOG that start with "X_" is field values (in addition to 'Owner')
+  #------- My assumption on the values in the variable AUDIT_LOG -------
+  
+  
+  library("openxlsx")
+  library("readxl")
+  d <- as.data.frame(read_excel(filename)) #read the cleaned_data.xlsx as a dataframe
+  
+  FIELD = c() #create the FIELD dictionary for variables New Value/Old Value/Others
+  #basically what it will looks like:
+  #$'Owner' -> 'XXXX' 'YYYY' where 'XXXX' is the old value and 'YYYY' is the new value
+  
+  value_count = 1 # count the number of New Value/Old Value/Others in each Field
+  
+  dummy = "" # to temporarily store the field value key on each loop through
+  
+  for (i in 1:nrow(d[1])){
+  temp_value = x[[2]][i] #each value in vairable AUDIT_LOG
+  
+  firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
+  
+    if (identical(firstchar, "X_") || identical(temp_value, "Owner")){ #--> this could be adjusted later after deeper pattern research
+      #if the first two character is X_, then it is possibly a Field Value
+      #or if it's 'Owner' then it is also possibly a Field Value
+      
+      temp_value = paste(d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+      #such that each key in the FIELD dictionary will be unique
+      
+      value_count = 1 #reset the value count to 1 *important* 
+      
+      FIELD[[temp_value]] = c() #initiate the dictionary as an empty vector
+      #in the vector, we will be storing the possible New/Old/Others values
+      
+      dummy = temp_value # set the dummy key equal to the field value
+      
+   } else {
+      FIELD[[dummy]][value_count] = temp_value #if it's not those two possibilites of 'X_' 
+      #or 'Owner' we know that the value might not be a field value. As such, we store 
+      #it in the field value key that correspond to it...
+      value_count = value_count + 1 # we increment the vector counter in case if there are more
+      #New/Old/Others non-Field values
+    }
+  }
+  
+  return(FIELD)
+}
+
+
+
