@@ -113,17 +113,53 @@ clean_str = function(str){
   str = gsub("?Y4\\w+", "", str)
   str = gsub("?Z4\\w+", "", str)
   str = gsub("?V4\\w+", "", str)
+  
+  
+  str = gsub("?A5\\w+", "", str)
+  str = gsub("?B5\\w+", "", str)
+  str = gsub("?C4\\w+", "", str)
+  str = gsub("?D5\\w+", "", str)
+  str = gsub("?E5\\w+", "", str)
+  str = gsub("?F5\\w+", "", str)
+  str = gsub("?G5\\w+", "", str)
+  str = gsub("?H5\\w+", "", str)
+  str = gsub("?I5\\w+", "", str)
+  str = gsub("?J5\\w+", "", str)
+  str = gsub("?K5\\w+", "", str)
+  str = gsub("?L5\\w+", "", str)
+  str = gsub("?M5\\w+", "", str)
+  str = gsub("?N5\\w+", "", str)
+  str = gsub("?O5\\w+", "", str)
+  str = gsub("?P5\\w+", "", str)
+  str = gsub("?Q5\\w+", "", str)
+  str = gsub("?R5\\w+", "", str)
+  str = gsub("?S5\\w+", "", str)
+  str = gsub("?T5\\w+", "", str)
+  str = gsub("?U5\\w+", "", str)
+  str = gsub("?W5\\w+", "", str)
+  str = gsub("?X5\\w+", "", str)
+  str = gsub("?Y5\\w+", "", str)
+  str = gsub("?Z5\\w+", "", str)
+  str = gsub("?V5\\w+", "", str)
+  
   str = gsub("2", "", str)
   str = gsub("0", "", str)
   str = gsub("1", "", str)
+  str = gsub("3", "", str)
+  str = gsub("4", "", str)
+  str = gsub("5", "", str)
+  str = gsub("6", "", str)
+  str = gsub("7", "", str)
+  str = gsub("8", "", str)
+  str = gsub("9", "", str)
+  str = gsub("/", "", str)
+  str = gsub(":", "", str)
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
   str = str_trim(str, side = "both")
   
   return(str)
 }
-
-
 
 
 #This function  cleans the file
@@ -172,5 +208,7 @@ clean_the_data = function(filename){
   data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
+  print("success!")
   return(data_cleaned)
 }
+
