@@ -211,18 +211,7 @@ clean_the_data = function(filename){
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
-  print("success!")
+  print("***************** success! *****************")
   return(data_cleaned)
 }
-
-
-
-# DELETE THESE LATER... JUST TESTING
-data <- read_excel("cleaned_data.xlsx")
-attach(data)
-tab = table(AUDIT_LOG)
-sorted <- tab[order(tab, decreasing = TRUE)]
-sorted
-
-
 
