@@ -157,6 +157,7 @@ clean_str = function(str){
   str = gsub("-", "", str)
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
+  str = gsub("Open for Correction", "Open_for_Correction", str)
   str = str_trim(str, side = "both")
   
   return(str)
@@ -206,12 +207,22 @@ clean_the_data = function(filename){
     }
   }
   #store cleaned data to new data frame
-  data_cleaned = data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
+  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
   print("success!")
-  
   return(data_cleaned)
 }
+
+
+
+# DELETE THESE LATER... JUST TESTING
+data <- read_excel("cleaned_data.xlsx")
+attach(data)
+tab = table(AUDIT_LOG)
+sorted <- tab[order(tab, decreasing = TRUE)]
+sorted
+
+
 
