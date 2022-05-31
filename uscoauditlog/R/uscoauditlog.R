@@ -144,7 +144,7 @@ clean_the_data = function(filename){
   LOGIN <- c()
   OWNERSHIP <- c()
   RECEIPT_DATE = c()
-  WAIT_ON_CUST = C()
+  WAIT_ON_CUST = c()
   REGISTRATION_DECISION_DATE = c()
   REGISTRATION_DECISION = c()
   count = 1 # to count the number of instances *important*
@@ -153,7 +153,6 @@ clean_the_data = function(filename){
   #Iterate through each row, then for each row,  iterate through
   # each Audit variable and then append them into the new vectors created above
   for (i in 1:nrow(d[1])){
-    print(i)
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
       SR_NUM[count] = d[[1]][i]
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
@@ -166,7 +165,6 @@ clean_the_data = function(filename){
       WAIT_ON_CUST[count] = d[[9]][j]
       REGISTRATION_DECISION_DATE[count] = d[[10]][j]
       REGISTRATION_DECISION[count] = d[[11]][j]
-      
       count <- count + 1
     }
   }
