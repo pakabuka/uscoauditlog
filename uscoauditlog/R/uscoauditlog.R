@@ -159,6 +159,8 @@ clean_str = function(str){
   str = gsub("  ", " ", str)
   str = gsub("Open for Correction", "Open_for_Correction", str)
   str = gsub("Pending Payment", "Pending_Payment", str)
+  str = gsub("Contact Last Name", "Contact_Last_Name", str)
+  str = gsub("Contact First Name", "Contact_First_Name", str)
   str = str_trim(str, side = "both")
   
   return(str)
@@ -215,3 +217,12 @@ clean_the_data = function(filename){
   print("******************* success! *******************")
   return(data_cleaned)
 }
+
+
+
+# DELETE THESE LATER... JUST TESTING
+#data <- read_excel("cleaned_data.xlsx")
+#attach(data)
+#tab = table(AUDIT_LOG)
+#sorted <- tab[order(tab, decreasing = TRUE)]
+#sorted
