@@ -154,6 +154,7 @@ clean_str = function(str){
   str = gsub("9", "", str)
   str = gsub("/", "", str)
   str = gsub(":", "", str)
+  str = gsub("-", "", str)
   str = gsub("    ", " ", str)
   str = gsub("  ", " ", str)
   str = str_trim(str, side = "both")
@@ -208,6 +209,7 @@ clean_the_data = function(filename){
   data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, LOGIN, OWNERSHIP, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
+  
   print("success!")
   return(data_cleaned)
 }
