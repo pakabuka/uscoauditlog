@@ -1,7 +1,7 @@
 Package: uscoauditlog
 Type: Package
 Title: Clean U.S. Copyright Office Audi_Data Spreadsheet Variable "AUDIT_LOG""
-Version: 0.1.0 
+Version: 1.1.0 
 Author: Frederick Liu
 Maintainer: Frederick Liu <sliu85@u.rochester.edu>
 Description: This package includes a function, when used, automatically cleans the variable "AUDIT_LOG" in the Audit_Data spreadsheet and returns a new Spreadsheet with the reformatted data.
