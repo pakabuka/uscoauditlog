@@ -235,6 +235,9 @@ clean_the_data = function(filename){
 
 format_the_cleaned_data <- function(filename){
   
+  #*Note* the whole process will take about 40 mins given the size of cleaned_data.xlsx
+  # the returned data frame is a large list of 196540 element
+  
   #------- My assumption on the values in the variable AUDIT_LOG -------
   # all the values in AUDIT_LOG that start with "X_" is field values (in addition to 'Owner')
   #------- My assumption on the values in the variable AUDIT_LOG -------
@@ -279,5 +282,24 @@ format_the_cleaned_data <- function(filename){
       #New/Old/Others non-Field values
     }
   }
+  
+  
+  #export it to txt file:
+  
+  #options(max.print=999999)
+  #sink("formatted_data_DRAFT.txt")
+  #print(FIELD)
+  #sink()
+  
+  
   return(FIELD)
 }
+
+
+# DELETE THESE LATER... JUST TESTING
+#install_github("pakabuka/uscoauditlog/uscoauditlog")
+#data <- read_excel("cleaned_data.xlsx")
+#attach(data)
+#tab = table(AUDIT_LOG)
+#sorted <- tab[order(tab, decreasing = TRUE)]
+#sorted
