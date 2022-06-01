@@ -267,7 +267,7 @@ format_the_cleaned_data <- function(filename){
   
   firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
   
-    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(temp_value, "SR_STAT_I") ||identical(temp_value, "SR_SUB_STAT_ID") ){ #--> this could be adjusted later after deeper pattern research
+    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID") ||identical(temp_value, "SR_SUB_STAT_ID") ){ #--> this could be adjusted later after deeper pattern research
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
      
@@ -276,7 +276,7 @@ format_the_cleaned_data <- function(filename){
       #such that each key in the FIELD dictionary will be unique
     
       
-      if (identical(temp_value, "SR_STAT_I")){ #To redistribute specific values to its field dictionary value
+      if (identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
         sr_stat_id_count = 1
         sr_stat_id_dummy = temp_PASTED_value
         FIELD[[temp_PASTED_value]] = c()
@@ -317,9 +317,10 @@ format_the_cleaned_data <- function(filename){
   #export it to txt file:
   
   #options(max.print=999999)
-  #sink("formatted_data_DRAFT.txt")
+  #sink("test_data_formatted.txt")
   #print(FIELD)
   #sink()
+  
   
   return(FIELD)
 }
