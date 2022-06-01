@@ -264,7 +264,7 @@ format_the_cleaned_data <- function(filename){
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
       
-      temp_value = paste(d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+      temp_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
       #such that each key in the FIELD dictionary will be unique
       
       value_count = 1 #reset the value count to 1 *important* 
@@ -303,3 +303,6 @@ format_the_cleaned_data <- function(filename){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
+
+
+
