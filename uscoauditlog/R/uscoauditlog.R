@@ -239,10 +239,10 @@ format_the_cleaned_data <- function(filename){
   # all the values in AUDIT_LOG that start with "X_" is field values (in addition to 'Owner')
   #------- My assumption on the values in the variable AUDIT_LOG -------
   
-  
   library("openxlsx")
   library("readxl")
-  d <- as.data.frame(read_excel(filename)) #read the cleaned_data.xlsx as a dataframe
+  d <- read_excel(filename)
+  d <- as.data.frame(d) #read the cleaned_data.xlsx as a dataframe
   
   FIELD = c() #create the FIELD dictionary for variables New Value/Old Value/Others
   #basically what it will looks like:
@@ -253,7 +253,7 @@ format_the_cleaned_data <- function(filename){
   dummy = "" # to temporarily store the field value key on each loop through
   
   for (i in 1:nrow(d[1])){
-  temp_value = x[[2]][i] #each value in vairable AUDIT_LOG
+  temp_value = d[[2]][i] #each value in variable AUDIT_LOG
   
   firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
   
@@ -279,9 +279,5 @@ format_the_cleaned_data <- function(filename){
       #New/Old/Others non-Field values
     }
   }
-  
   return(FIELD)
 }
-
-
-
