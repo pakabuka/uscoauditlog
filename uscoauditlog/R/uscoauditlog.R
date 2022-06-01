@@ -328,6 +328,13 @@ format_the_cleaned_data <- function(filename){
 
 output_xlsx_format_the_cleaned_data <- function(data){
   #take in a data frame and then format them into a new readable dataframe and then output in .xlsx file
+#this new data frame include variables
+  #1. SR_NUM
+  #2. FIELD
+  #3. OLD_VALUE
+  #4. NEW_VALUE
+  #5. NONDETERMINISTIC_VALUE
+  
   
   list_of_fields_keys = names(data)
   SR_NUM = c()
@@ -380,3 +387,6 @@ output_xlsx_format_the_cleaned_data <- function(data){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
+
+
+
