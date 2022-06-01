@@ -269,17 +269,18 @@ format_the_cleaned_data <- function(filename){
       
       value_count = 1 #reset the value count to 1 *important* 
       
-      FIELD[[temp_value]] = c() #initiate the dictionary as an empty vector
+      FIELD[[temp_value]] = c("") #initiate the dictionary as an empty vector
       #in the vector, we will be storing the possible New/Old/Others values
       
       dummy = temp_value # set the dummy key equal to the field value
       
    } else {
-      FIELD[[dummy]][value_count] = temp_value #if it's not those two possibilites of 'X_' 
-      #or 'Owner' we know that the value might not be a field value. As such, we store 
-      #it in the field value key that correspond to it...
-      value_count = value_count + 1 # we increment the vector counter in case if there are more
-      #New/Old/Others non-Field values
+       FIELD[[dummy]][value_count] = temp_value #if it's not those two possibilites of 'X_' 
+       #or 'Owner' we know that the value might not be a field value. As such, we store 
+       #it in the field value key that correspond to it...
+       value_count = value_count + 1 # we increment the vector counter in case if there are more
+       #New/Old/Others non-Field values
+    
     }
   }
   
@@ -294,15 +295,3 @@ format_the_cleaned_data <- function(filename){
   
   return(FIELD)
 }
-
-
-# DELETE THESE LATER... JUST TESTING
-#install_github("pakabuka/uscoauditlog/uscoauditlog")
-#data <- read_excel("cleaned_data.xlsx")
-#attach(data)
-#tab = table(AUDIT_LOG)
-#sorted <- tab[order(tab, decreasing = TRUE)]
-#sorted
-
-
-
