@@ -326,6 +326,53 @@ format_the_cleaned_data <- function(filename){
 }
 
 
+output_xlsx_format_the_cleaned_data <- function(data){
+  #take in a data frame and then format them into a new readable dataframe and then output in .xlsx file
+  
+  list_of_fields_keys = names(data)
+  SR_NUM = c()
+  FIELD = c()
+  
+  NEW_VALUE = c()
+  OLD_VALUE = c()
+  NONDETERMINISTIC_VALUE = c()
+  
+  count = 1
+  for (keys in list_of_fields_keys){
+    splited_keys = str_split(keys, " ")
+    SR_NUM_VALUE = splited_keys[[1]][4]
+    FIELD_VALUE = splited_keys[[1]][5]
+    
+    value = data[[keys]]
+    
+    if (length(value) == 2){
+      OLD_VALUE[count] = value[1]
+      NEW_VALUE[count] = value[2]
+      NONDETERMINISTIC_VALUE[count] = ""
+    } else if (length(value) == 1){
+      OLD_VALUE[count] = value[1] #if the length of the value list is 1, then we just assume that it is an old value...
+      NEW_VALUE[count] = ""
+      NONDETERMINISTIC_VALUE[count] = ""
+    } else {
+      OLD_VALUE[count] = ""
+      NEW_VALUE[count] = ""
+      NONDETERMINISTIC_VALUE[count] = paste(value, collapse = ", ") 
+      #if the length of the value is list is more than 2, 
+      #then it's hard to determine whether they are new/old value, therefore, we put it 
+      #all at the non-deterministic value bracket
+    }
+  
+    SR_NUM[count] = SR_NUM_VALUE
+    FIELD[count] = FIELD_VALUE
+    
+    count = count + 1
+  }
+  
+  fomatted_data = data.frame(SR_NUM, FIELD, OLD_VALUE, NEW_VALUE, NONDETERMINISTIC_VALUE)
+  
+  openxlsx::write.xlsx(x = fomatted_data, file = "cleaned_data_formatted(test).xlsx", sheetName = "AuditDataFormatted", append = FALSE, rowNames = FALSE)
+}
+
 # DELETE THESE LATER... JUST TESTING
 #install_github("pakabuka/uscoauditlog/uscoauditlog")
 #data <- read_excel("cleaned_data.xlsx")
