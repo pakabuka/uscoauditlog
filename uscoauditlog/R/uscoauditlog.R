@@ -235,7 +235,7 @@ clean_the_data = function(filename){
 
 format_the_cleaned_data <- function(filename){
   
-  #*Note* the whole process will take about 40 mins given the size of cleaned_data.xlsx
+  #*Note* the whole process will take about 1 hour and 20 mins given the size of cleaned_data.xlsx
   # the returned data frame is a large list of 196540 element
   
   #------- My assumption on the values in the variable AUDIT_LOG -------
@@ -387,6 +387,3 @@ output_xlsx_format_the_cleaned_data <- function(data){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
-
-
-
