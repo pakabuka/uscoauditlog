@@ -252,35 +252,64 @@ format_the_cleaned_data <- function(filename){
   #$'Owner' -> 'XXXX' 'YYYY' where 'XXXX' is the old value and 'YYYY' is the new value
   
   value_count = 1 # count the number of New Value/Old Value/Others in each Field
+  other_dummy = "" # to temporarily store the field value key on each loop through
   
-  dummy = "" # to temporarily store the field value key on each loop through
+  sr_stat_id_dummy = "" # to temporarily store the field value SR_STAT_ID such that its non-field values will be redistributed to it's dictionary field.
+  sr_stat_id_count = 1
+  
+  
+  x_sr_status_internal_dummy = ""  # to temporarily store the field value X_SR_STATUS_INTERNAL such that its non-field values will be redistributed to it's dictionary field
+  x_sr_status_internal_count = 1
+  
   
   for (i in 1:nrow(d[1])){
   temp_value = d[[2]][i] #each value in variable AUDIT_LOG
   
   firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
   
-    if (identical(firstchar, "X_") || identical(temp_value, "Owner")){ #--> this could be adjusted later after deeper pattern research
+    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(temp_value, "SR_STAT_I") ||identical(temp_value, "SR_SUB_STAT_ID") ){ #--> this could be adjusted later after deeper pattern research
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
-      
-      temp_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+     
+        
+      temp_PASTED_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
       #such that each key in the FIELD dictionary will be unique
+    
       
-      value_count = 1 #reset the value count to 1 *important* 
-      
-      FIELD[[temp_value]] = c("") #initiate the dictionary as an empty vector
-      #in the vector, we will be storing the possible New/Old/Others values
-      
-      dummy = temp_value # set the dummy key equal to the field value
+      if (identical(temp_value, "SR_STAT_I")){ #To redistribute specific values to its field dictionary value
+        sr_stat_id_count = 1
+        sr_stat_id_dummy = temp_PASTED_value
+        FIELD[[temp_PASTED_value]] = c()
+        
+      } else if (identical(temp_value, "X_SR_STATUS_INTERNA")){
+        x_sr_status_internal_count = 1
+        x_sr_status_internal_dummy = temp_PASTED_value
+        FIELD[[temp_PASTED_value]] = c()
+      }else {
+        value_count = 1 #reset the value count to 1 *important* 
+        FIELD[[temp_PASTED_value]] = c("") #initiate the dictionary as an empty vector
+        #in the vector, we will be storing the possible New/Old/Others values
+        other_dummy = temp_PASTED_value # set the dummy key equal to the field value
+      }
       
    } else {
-       FIELD[[dummy]][value_count] = temp_value #if it's not those two possibilites of 'X_' 
+     
+     if (identical(temp_value, "Open") || identical(temp_value, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
+       FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = temp_value
+       sr_stat_id_count = sr_stat_id_count + 1
+       
+     } else if (identical(temp_value, "Open_for_Correction")||identical(temp_value, "RESCANNED")||identical(temp_value, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
+       FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = temp_value
+       x_sr_status_internal_count = x_sr_status_internal_count + 1
+       
+     }
+     else {
+       FIELD[[other_dummy]][value_count] = temp_value #if it's not those two possibilities of 'X_' 
        #or 'Owner' we know that the value might not be a field value. As such, we store 
        #it in the field value key that correspond to it...
        value_count = value_count + 1 # we increment the vector counter in case if there are more
        #New/Old/Others non-Field values
-    
+     }
     }
   }
   
@@ -292,6 +321,14 @@ format_the_cleaned_data <- function(filename){
   #print(FIELD)
   #sink()
   
-  
   return(FIELD)
 }
+
+
+# DELETE THESE LATER... JUST TESTING
+#install_github("pakabuka/uscoauditlog/uscoauditlog")
+#data <- read_excel("cleaned_data.xlsx")
+#attach(data)
+#tab = table(AUDIT_LOG)
+#sorted <- tab[order(tab, decreasing = TRUE)]
+#sorted
