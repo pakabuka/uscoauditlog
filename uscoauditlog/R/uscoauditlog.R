@@ -239,7 +239,7 @@ format_the_cleaned_data <- function(filename){
   # the returned data frame is a large list of 196540 element
   
   #------- My assumption on the values in the variable AUDIT_LOG -------
-  # all the values in AUDIT_LOG that start with "X_" is field values (in addition to 'Owner')
+  # all the values in AUDIT_LOG that start with "X_" or "SR_" are field values (in addition to 'Owner')
   #------- My assumption on the values in the variable AUDIT_LOG -------
   
   library("openxlsx")
@@ -266,8 +266,9 @@ format_the_cleaned_data <- function(filename){
   temp_value = d[[2]][i] #each value in variable AUDIT_LOG
   
   firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
+  secnodchar = substr(temp_value, 1, 3)
   
-    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID") ||identical(temp_value, "SR_SUB_STAT_ID") ){ #--> this could be adjusted later after deeper pattern research
+    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
      
@@ -387,3 +388,6 @@ output_xlsx_format_the_cleaned_data <- function(data){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
+
+
+
