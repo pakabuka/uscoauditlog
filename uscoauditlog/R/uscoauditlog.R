@@ -377,7 +377,7 @@ output_xlsx_format_the_cleaned_data <- function(data){
   
   fomatted_data = data.frame(SR_NUM, FIELD, OLD_VALUE, NEW_VALUE, NONDETERMINISTIC_VALUE)
   
-  openxlsx::write.xlsx(x = fomatted_data, file = "cleaned_data_formatted(test).xlsx", sheetName = "AuditDataFormatted", append = FALSE, rowNames = FALSE)
+  openxlsx::write.xlsx(x = fomatted_data, file = "cleaned_data_formatted.xlsx", sheetName = "AuditDataFormatted", append = FALSE, rowNames = FALSE)
 }
 
 # DELETE THESE LATER... JUST TESTING
