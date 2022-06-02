@@ -179,10 +179,8 @@ clean_str = function(str){
 }
 
 
-#This function  cleans the file
-
 #setwd("/Users/frederickliu/Desktop")
-clean_the_data = function(filename){
+clean_data_to_excel = function(filename){
   library("openxlsx")
   library("readxl")
   d <- read_excel(filename) #read the file
@@ -229,13 +227,63 @@ clean_the_data = function(filename){
   openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
   
   print("******************* success! *******************")
-  #return(data_cleaned) #don't really need to return it...
+  #return(data_cleaned) #don't really need to return it... but needed for the ultimate cleaning function
+}
+
+clean_data_to_dataframe = function(filename){
+  library("openxlsx")
+  library("readxl")
+  d <- read_excel(filename) #read the file
+  d[2] = apply(d[2], 2, clean_str) #clean the AUDIT_LOG strings
+  
+  #create new vectors to store the new data
+  SR_NUM <- c()
+  AUDIT_LOG <- c()
+  OPERATION_UNIT <- c()
+  DIVISION <- c()
+  TEAM <- c()
+  LOGIN <- c()
+  OWNERSHIP_DATE <- c()
+  RECEIPT_DATE = c()
+  WAIT_ON_CUST = c()
+  REGISTRATION_DECISION_DATE = c()
+  REGISTRATION_DECISION = c()
+  count = 1 # to count the number of instances *important*
+  
+  #Run time for this is O(n^2)
+  #Iterate through each row, then for each row,  iterate through
+  # each Audit variable and then append them into the new vectors created above
+  for (i in 1:nrow(d[1])){
+    for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
+      SR_NUM[count] = d[[1]][i]
+      AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
+      OPERATION_UNIT[count] = d[[3]][i]
+      DIVISION[count] = d[[4]][i]
+      TEAM[count] = d[[5]][i]
+      LOGIN[count] = d[[6]][i]
+      OWNERSHIP_DATE[count] = d[[7]][i]
+      RECEIPT_DATE[count] = d[[8]][i]
+      WAIT_ON_CUST[count] = d[[9]][i]
+      REGISTRATION_DECISION_DATE[count] = d[[10]][i]
+      REGISTRATION_DECISION[count] = d[[11]][i]
+      count <- count + 1
+    }
+  }
+  #store cleaned data to new data frame
+  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, 
+                             LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, 
+                             REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
+  #export data into a new .xlsx file
+  #openxlsx::write.xlsx(x = data_cleaned, file = "cleaned_data.xlsx", sheetName = "AuditData", append = FALSE, rowNames = FALSE)
+  
+  #print("******************* success! *******************")
+  return(data_cleaned) #don't really need to return it... but needed for the ultimate cleaning function
 }
 
 
-format_the_cleaned_data <- function(filename){
+format_from_excel <- function(filename){
   
-  #*Note* the whole process will take about 1 hour and 20 mins given the size of cleaned_data.xlsx
+  #*Note* the whole process will take about 1 hour and 50 mins given the size of cleaned_data.xlsx
   # the returned data frame is a large list of 196540 element
   
   #------- My assumption on the values in the variable AUDIT_LOG -------
@@ -327,7 +375,98 @@ format_the_cleaned_data <- function(filename){
 }
 
 
-output_xlsx_format_the_cleaned_data <- function(data){
+format_from_dataframe <- function(dataframedata){
+  
+  #*Note* the whole process will take about 1 hour and 50 mins given the size of cleaned_data.xlsx
+  # the returned data frame is a large list of 196540 element
+  
+  #------- My assumption on the values in the variable AUDIT_LOG -------
+  # all the values in AUDIT_LOG that start with "X_" or "SR_" are field values (in addition to 'Owner')
+  #------- My assumption on the values in the variable AUDIT_LOG -------
+  
+  d <- as.data.frame(dataframedata)
+  
+  FIELD = c() #create the FIELD dictionary for variables New Value/Old Value/Others
+  #basically what it will looks like:
+  #$'Owner' -> 'XXXX' 'YYYY' where 'XXXX' is the old value and 'YYYY' is the new value
+  
+  value_count = 1 # count the number of New Value/Old Value/Others in each Field
+  other_dummy = "" # to temporarily store the field value key on each loop through
+  
+  sr_stat_id_dummy = "" # to temporarily store the field value SR_STAT_ID such that its non-field values will be redistributed to it's dictionary field.
+  sr_stat_id_count = 1
+  
+  
+  x_sr_status_internal_dummy = ""  # to temporarily store the field value X_SR_STATUS_INTERNAL such that its non-field values will be redistributed to it's dictionary field
+  x_sr_status_internal_count = 1
+  
+  
+  for (i in 1:nrow(d[1])){
+    temp_value = d[[2]][i] #each value in variable AUDIT_LOG
+    
+    firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
+    secnodchar = substr(temp_value, 1, 3)
+    
+    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
+      #if the first two character is X_, then it is possibly a Field Value
+      #or if it's 'Owner' then it is also possibly a Field Value
+      
+      
+      temp_PASTED_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+      #such that each key in the FIELD dictionary will be unique
+      
+      
+      if (identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
+        sr_stat_id_count = 1
+        sr_stat_id_dummy = temp_PASTED_value
+        FIELD[[temp_PASTED_value]] = c()
+        
+      } else if (identical(temp_value, "X_SR_STATUS_INTERNA")){
+        x_sr_status_internal_count = 1
+        x_sr_status_internal_dummy = temp_PASTED_value
+        FIELD[[temp_PASTED_value]] = c()
+      }else {
+        value_count = 1 #reset the value count to 1 *important* 
+        FIELD[[temp_PASTED_value]] = c("") #initiate the dictionary as an empty vector
+        #in the vector, we will be storing the possible New/Old/Others values
+        other_dummy = temp_PASTED_value # set the dummy key equal to the field value
+      }
+      
+    } else {
+      
+      if (identical(temp_value, "Open") || identical(temp_value, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
+        FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = temp_value
+        sr_stat_id_count = sr_stat_id_count + 1
+        
+      } else if (identical(temp_value, "Open_for_Correction")||identical(temp_value, "RESCANNED")||identical(temp_value, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
+        FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = temp_value
+        x_sr_status_internal_count = x_sr_status_internal_count + 1
+        
+      }
+      else {
+        FIELD[[other_dummy]][value_count] = temp_value #if it's not those two possibilities of 'X_' 
+        #or 'Owner' we know that the value might not be a field value. As such, we store 
+        #it in the field value key that correspond to it...
+        value_count = value_count + 1 # we increment the vector counter in case if there are more
+        #New/Old/Others non-Field values
+      }
+    }
+  }
+  
+  
+  #export it to txt file:
+  
+  options(max.print=999999)
+  sink("audit_data_formatted.txt")
+  print(FIELD)
+  sink()
+  
+  
+  return(FIELD)
+}
+
+
+support_function <- function(data){
   #take in a data frame and then format them into a new readable dataframe and then output in .xlsx file
 #this new data frame include variables
   #1. SR_NUM
@@ -378,7 +517,14 @@ output_xlsx_format_the_cleaned_data <- function(data){
   
   fomatted_data = data.frame(SR_NUM, FIELD, OLD_VALUE, NEW_VALUE, NONDETERMINISTIC_VALUE)
   
-  openxlsx::write.xlsx(x = fomatted_data, file = "cleaned_data_formatted.xlsx", sheetName = "AuditDataFormatted", append = FALSE, rowNames = FALSE)
+  openxlsx::write.xlsx(x = fomatted_data, file = "audit_data_formatted.xlsx", sheetName = "AuditData_FORMATTED", append = FALSE, rowNames = FALSE)
+}
+
+
+clean_format_all <- function(excelfile){
+  cleaned_data= clean_data_to_dataframe(excelfile)
+  formatted_data = format_from_dataframe(cleaned_data)
+  support_function(formatted_data)
 }
 
 # DELETE THESE LATER... JUST TESTING
@@ -388,6 +534,3 @@ output_xlsx_format_the_cleaned_data <- function(data){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
-
-
-
