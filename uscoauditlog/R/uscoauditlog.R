@@ -189,7 +189,7 @@ clean_data_to_excel = function(filename){
   #create new vectors to store the new data
   SR_NUM <- c()
   AUDIT_LOG <- c()
-  OPERATION_UNIT <- c()
+  OPERATION_DT <- c()
   DIVISION <- c()
   TEAM <- c()
   LOGIN <- c()
@@ -207,7 +207,7 @@ clean_data_to_excel = function(filename){
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
       SR_NUM[count] = d[[1]][i]
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
-      OPERATION_UNIT[count] = d[[3]][i]
+      OPERATION_DT[count] = as.character(d[[3]][i])
       DIVISION[count] = d[[4]][i]
       TEAM[count] = d[[5]][i]
       LOGIN[count] = d[[6]][i]
@@ -220,7 +220,7 @@ clean_data_to_excel = function(filename){
     }
   }
   #store cleaned data to new data frame
-  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, 
+  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_DT, DIVISION, TEAM, 
                              LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, 
                              REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
@@ -239,7 +239,7 @@ clean_data_to_dataframe = function(filename){
   #create new vectors to store the new data
   SR_NUM <- c()
   AUDIT_LOG <- c()
-  OPERATION_UNIT <- c()
+  OPERATION_DT <- c()
   DIVISION <- c()
   TEAM <- c()
   LOGIN <- c()
@@ -257,7 +257,7 @@ clean_data_to_dataframe = function(filename){
     for (j in 1:length(str_split(d[[2]][i], " ")[[1]])){
       SR_NUM[count] = d[[1]][i]
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
-      OPERATION_UNIT[count] = d[[3]][i]
+      OPERATION_DT[count] = as.character(d[[3]][i])
       DIVISION[count] = d[[4]][i]
       TEAM[count] = d[[5]][i]
       LOGIN[count] = d[[6]][i]
@@ -270,7 +270,7 @@ clean_data_to_dataframe = function(filename){
     }
   }
   #store cleaned data to new data frame
-  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_UNIT, DIVISION, TEAM, 
+  data_cleaned <- data.frame(SR_NUM, AUDIT_LOG, OPERATION_DT, DIVISION, TEAM, 
                              LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, 
                              REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   #export data into a new .xlsx file
@@ -484,6 +484,7 @@ support_function <- function(data){
   OLD_VALUE = c()
   NONDETERMINISTIC_VALUE = c()
   
+  
   count = 1
   for (keys in list_of_fields_keys){
     splited_keys = str_split(keys, " ")
@@ -534,6 +535,3 @@ clean_format_all <- function(excelfile){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
-
-
-
