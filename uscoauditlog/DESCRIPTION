@@ -1,0 +1,12 @@
+Package: uscoauditlog
+Type: Package
+Title: USCO PMD SR Audit Data dataset cleaning algorithms
+Version: 1.0.1 
+Author: Frederick Liu [aut, cre]
+Maintainer: Frederick Liu <sliu85@u.rochester.edu>
+Description: Algorithms for the United States Copyright Office Product Management Division SR Audit Data dataset.
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports: stringr, openxlsx, readxl
+Depends: R (>= 3.4.0), stringr, openxlsx, readxl
