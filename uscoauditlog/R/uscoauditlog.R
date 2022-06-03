@@ -493,16 +493,16 @@ support_function <- function(data){
     value = data[[keys]]
     
     if (length(value) == 2){
-      OLD_VALUE[count] = value[1]
-      NEW_VALUE[count] = value[2]
+      NEW_VALUE[count] = value[1]
+      OLD_VALUE[count] = value[2]
       NONDETERMINISTIC_VALUE[count] = ""
     } else if (length(value) == 1){
-      OLD_VALUE[count] = value[1] #if the length of the value list is 1, then we just assume that it is an old value...
-      NEW_VALUE[count] = ""
+      NEW_VALUE[count] = value[1] #if the length of the value list is 1, then we just assume that it is an old value...
+      OLD_VALUE[count] = ""
       NONDETERMINISTIC_VALUE[count] = ""
     } else {
-      OLD_VALUE[count] = ""
       NEW_VALUE[count] = ""
+      OLD_VALUE[count] = ""
       NONDETERMINISTIC_VALUE[count] = paste(value, collapse = ", ") 
       #if the length of the value is list is more than 2, 
       #then it's hard to determine whether they are new/old value, therefore, we put it 
@@ -515,7 +515,7 @@ support_function <- function(data){
     count = count + 1
   }
   
-  fomatted_data = data.frame(SR_NUM, FIELD, OLD_VALUE, NEW_VALUE, NONDETERMINISTIC_VALUE)
+  fomatted_data = data.frame(SR_NUM, FIELD, NEW_VALUE, OLD_VALUE, NONDETERMINISTIC_VALUE)
   
   openxlsx::write.xlsx(x = fomatted_data, file = "audit_data_formatted.xlsx", sheetName = "AuditData_FORMATTED", append = FALSE, rowNames = FALSE)
 }
@@ -534,3 +534,6 @@ clean_format_all <- function(excelfile){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
+
+
+
