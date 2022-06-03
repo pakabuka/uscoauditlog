@@ -209,7 +209,7 @@ clean_data_to_excel = function(filename){
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
       OPERATION_DT[count] = as.character(d[[3]][i])
       DIVISION[count] = d[[4]][i]
-      TEAM[count] = d[[5]][i]
+      TEAM[count] = gsub(" ", "-", d[[5]][i])
       LOGIN[count] = d[[6]][i]
       OWNERSHIP_DATE[count] = d[[7]][i]
       RECEIPT_DATE[count] = d[[8]][i]
@@ -259,7 +259,7 @@ clean_data_to_dataframe = function(filename){
       AUDIT_LOG[count] = str_split(d[[2]][i], " ")[[1]][j]
       OPERATION_DT[count] = as.character(d[[3]][i])
       DIVISION[count] = d[[4]][i]
-      TEAM[count] = d[[5]][i]
+      TEAM[count] = gsub(" ", "-", d[[5]][i])
       LOGIN[count] = d[[6]][i]
       OWNERSHIP_DATE[count] = d[[7]][i]
       RECEIPT_DATE[count] = d[[8]][i]
@@ -311,26 +311,26 @@ format_from_excel <- function(filename){
   
   
   for (i in 1:nrow(d[1])){
-  temp_value = d[[2]][i] #each value in variable AUDIT_LOG
+  AUDIT_LOG = d[[2]][i] #each value in variable AUDIT_LOG
   
-  firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
-  secnodchar = substr(temp_value, 1, 3)
+  firstchar = substr(AUDIT_LOG, 1, 2) #get the first two characters in the value
+  secnodchar = substr(AUDIT_LOG, 1, 3)
   
-    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
+    if (identical(firstchar, "X_") || identical(AUDIT_LOG, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
      
         
-      temp_PASTED_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+      temp_PASTED_value = paste("<", i, ">",d[[1]][i], AUDIT_LOG, d[[3]][i], d[[4]][i], d[[5]][i], d[[6]][i], d[[7]][i], d[[8]][i], d[[9]][i], d[[10]][i],d[[11]][i]) #paste the SR_NUM and the value together 
       #such that each key in the FIELD dictionary will be unique
     
       
-      if (identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
+      if (identical(AUDIT_LOG, "SR_STAT_I") || identical(AUDIT_LOG, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
         sr_stat_id_count = 1
         sr_stat_id_dummy = temp_PASTED_value
         FIELD[[temp_PASTED_value]] = c()
         
-      } else if (identical(temp_value, "X_SR_STATUS_INTERNA")){
+      } else if (identical(AUDIT_LOG, "X_SR_STATUS_INTERNA")){
         x_sr_status_internal_count = 1
         x_sr_status_internal_dummy = temp_PASTED_value
         FIELD[[temp_PASTED_value]] = c()
@@ -343,17 +343,17 @@ format_from_excel <- function(filename){
       
    } else {
      
-     if (identical(temp_value, "Open") || identical(temp_value, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
-       FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = temp_value
+     if (identical(AUDIT_LOG, "Open") || identical(AUDIT_LOG, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
+       FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = AUDIT_LOG
        sr_stat_id_count = sr_stat_id_count + 1
        
-     } else if (identical(temp_value, "Open_for_Correction")||identical(temp_value, "RESCANNED")||identical(temp_value, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
-       FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = temp_value
+     } else if (identical(AUDIT_LOG, "Open_for_Correction")||identical(AUDIT_LOG, "RESCANNED")||identical(AUDIT_LOG, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
+       FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = AUDIT_LOG
        x_sr_status_internal_count = x_sr_status_internal_count + 1
        
      }
      else {
-       FIELD[[other_dummy]][value_count] = temp_value #if it's not those two possibilities of 'X_' 
+       FIELD[[other_dummy]][value_count] = AUDIT_LOG #if it's not those two possibilities of 'X_' 
        #or 'Owner' we know that the value might not be a field value. As such, we store 
        #it in the field value key that correspond to it...
        value_count = value_count + 1 # we increment the vector counter in case if there are more
@@ -402,26 +402,26 @@ format_from_dataframe <- function(dataframedata){
   
   
   for (i in 1:nrow(d[1])){
-    temp_value = d[[2]][i] #each value in variable AUDIT_LOG
+    AUDIT_LOG = d[[2]][i] #each value in variable AUDIT_LOG
     
-    firstchar = substr(temp_value, 1, 2) #get the first two characters in the value
-    secnodchar = substr(temp_value, 1, 3)
+    firstchar = substr(AUDIT_LOG, 1, 2) #get the first two characters in the value
+    secnodchar = substr(AUDIT_LOG, 1, 3)
     
-    if (identical(firstchar, "X_") || identical(temp_value, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
+    if (identical(firstchar, "X_") || identical(AUDIT_LOG, "Owner") || identical(secnodchar, "SR_") ){ #--> this could be adjusted later after deeper pattern research
       #if the first two character is X_, then it is possibly a Field Value
       #or if it's 'Owner' then it is also possibly a Field Value
       
       
-      temp_PASTED_value = paste("<", i, ">",d[[1]][i], temp_value) #paste the SR_NUM and the value together 
+      temp_PASTED_value = paste("<", i, ">",d[[1]][i], AUDIT_LOG, d[[3]][i], d[[4]][i], d[[5]][i], d[[6]][i], d[[7]][i], d[[8]][i], d[[9]][i], d[[10]][i], d[[11]][i]) #paste the SR_NUM and the value together 
       #such that each key in the FIELD dictionary will be unique
       
       
-      if (identical(temp_value, "SR_STAT_I") || identical(temp_value, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
+      if (identical(AUDIT_LOG, "SR_STAT_I") || identical(AUDIT_LOG, "SR_STAT_ID")){ #To redistribute specific values to its field dictionary value
         sr_stat_id_count = 1
         sr_stat_id_dummy = temp_PASTED_value
         FIELD[[temp_PASTED_value]] = c()
         
-      } else if (identical(temp_value, "X_SR_STATUS_INTERNA")){
+      } else if (identical(AUDIT_LOG, "X_SR_STATUS_INTERNA")){
         x_sr_status_internal_count = 1
         x_sr_status_internal_dummy = temp_PASTED_value
         FIELD[[temp_PASTED_value]] = c()
@@ -434,17 +434,17 @@ format_from_dataframe <- function(dataframedata){
       
     } else {
       
-      if (identical(temp_value, "Open") || identical(temp_value, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
-        FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = temp_value
+      if (identical(AUDIT_LOG, "Open") || identical(AUDIT_LOG, "Closed")){  #To redistribute specific values to its field dictionary value SR_STAT_I
+        FIELD[[sr_stat_id_dummy]][sr_stat_id_count] = AUDIT_LOG
         sr_stat_id_count = sr_stat_id_count + 1
         
-      } else if (identical(temp_value, "Open_for_Correction")||identical(temp_value, "RESCANNED")||identical(temp_value, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
-        FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = temp_value
+      } else if (identical(AUDIT_LOG, "Open_for_Correction")||identical(AUDIT_LOG, "RESCANNED")||identical(AUDIT_LOG, "T")){  #To redistribute specific values to its field dictionary value X_SR_STATUS_INTERNA
+        FIELD[[x_sr_status_internal_dummy]][x_sr_status_internal_count] = AUDIT_LOG
         x_sr_status_internal_count = x_sr_status_internal_count + 1
         
       }
       else {
-        FIELD[[other_dummy]][value_count] = temp_value #if it's not those two possibilities of 'X_' 
+        FIELD[[other_dummy]][value_count] = AUDIT_LOG #if it's not those two possibilities of 'X_' 
         #or 'Owner' we know that the value might not be a field value. As such, we store 
         #it in the field value key that correspond to it...
         value_count = value_count + 1 # we increment the vector counter in case if there are more
@@ -484,12 +484,34 @@ support_function <- function(data){
   OLD_VALUE = c()
   NONDETERMINISTIC_VALUE = c()
   
+  OPERATION_DT <- c()
+  DIVISION <- c()
+  TEAM <- c()
+  LOGIN <- c()
+  OWNERSHIP_DATE <- c()
+  RECEIPT_DATE = c()
+  WAIT_ON_CUST = c()
+  REGISTRATION_DECISION_DATE = c()
+  REGISTRATION_DECISION = c()
+  
   
   count = 1
   for (keys in list_of_fields_keys){
     splited_keys = str_split(keys, " ")
+    
     SR_NUM_VALUE = splited_keys[[1]][4]
     FIELD_VALUE = splited_keys[[1]][5]
+    OP_DT_VALUE = splited_keys[[1]][6]
+    DIVISION_VALUE = splited_keys[[1]][7]
+    TEAM_VALUE = splited_keys[[1]][8]
+    LOGIN_VALUE = splited_keys[[1]][9]
+    OWNERSHIP_DATE_VALUE = splited_keys[[1]][10]
+    REICEPT_DATE_VALUE = splited_keys[[1]][11]
+    WAIT_ON_CUST_VALUE = splited_keys[[1]][12]
+    REG_DEC_DATE_VALUE = splited_keys[[1]][13]
+    REG_DEC_VALUE = splited_keys[[1]][14]
+    
+    
     
     value = data[[keys]]
     
@@ -513,10 +535,20 @@ support_function <- function(data){
     SR_NUM[count] = SR_NUM_VALUE
     FIELD[count] = FIELD_VALUE
     
+    OPERATION_DT[count] = OP_DT_VALUE
+    DIVISION[count] = DIVISION_VALUE
+    TEAM[count] = TEAM_VALUE
+    LOGIN[count] = LOGIN_VALUE
+    OWNERSHIP_DATE[count] = OWNERSHIP_DATE_VALUE
+    RECEIPT_DATE[count] =REICEPT_DATE_VALUE
+    WAIT_ON_CUST[count] =WAIT_ON_CUST_VALUE
+    REGISTRATION_DECISION_DATE[count] =REG_DEC_DATE_VALUE
+    REGISTRATION_DECISION[count] =REG_DEC_VALUE
+    
     count = count + 1
   }
   
-  fomatted_data = data.frame(SR_NUM, FIELD, NEW_VALUE, OLD_VALUE, NONDETERMINISTIC_VALUE)
+  fomatted_data = data.frame(SR_NUM, FIELD, NEW_VALUE, OLD_VALUE, NONDETERMINISTIC_VALUE, OPERATION_DT, DIVISION, TEAM, LOGIN, OWNERSHIP_DATE, RECEIPT_DATE, WAIT_ON_CUST, REGISTRATION_DECISION_DATE, REGISTRATION_DECISION)
   
   openxlsx::write.xlsx(x = fomatted_data, file = "audit_data_formatted.xlsx", sheetName = "AuditData_FORMATTED", append = FALSE, rowNames = FALSE)
 }
@@ -535,3 +567,6 @@ clean_format_all <- function(excelfile){
 #tab = table(AUDIT_LOG)
 #sorted <- tab[order(tab, decreasing = TRUE)]
 #sorted
+
+
+
